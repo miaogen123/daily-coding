@@ -1,5 +1,5 @@
-##### 读Item1 的随笔
-##### Item 1  template  type deduce
+### 读Chapter1的随笔
+#### Item 1  template  type deduce
 -   reference  is discarded during .
 -   it's normal when Paramtype is pointer or reference 
 -   Universal reference means rvalue reference .
@@ -37,3 +37,49 @@
             // type is void (*)(int, double)
             f2(someFunc); // param deduced as ref-to-func;
             // type is void (&)(int, double)
+
+***
+
+#### Item 2  auto type deduction
+
+-   This is exactly the same as the cases in Item 1
+-   auto can get different types by different declaration  forms
+
+        auto x1 = 27; // type is int, value is 27
+        auto x2(27); // ditto
+        auto x3 = { 27 }; // type is std::initializer_list<int>,
+        // value is { 27 }
+        auto x4{ 27 }; // ditto 
+-   there are two dedection happened, one is auto, another is std::initializer_list<T>
+
+        auto x3 = { 27 }; // type is std::initializer_list<int>,
+-   下面的代码用的**模板推断**而非auto推断
+
+        auto createInitList()
+        {
+        return { 1, 2, 3 }; // error: can't deduce type
+        } // for { 1, 2, 3 }
+***
+#### Item 3 understand decltype  
+
+-   c++中的container一般返回的是引用，但也存在返回value 的情况
+-   **universal reference ==右值引用**，主要使用用来处理，接受的参数可能既是\
+    左值，又可能是右值，同时也想保持这两种情况(同时处理),而不用写重载
+-   decltype 对于**表达式**以及decltype((x))类型的，总是产生左值引用
+-   **(c++14)** decltype(auto) 在推导返回值的时候，是为了进行处理返回引用的情况
+-   decltype 不修改表达式的类型，不想auto会omit reference
+
+//注释：mayer老先生很幽默啊：
+**That’s the kind of code that puts you on the express train
+to undefined behavior—a train you certainly don’t want to be on.**
+
+
+
+
+***
+
+#### 生词
+derision  嘲笑
+admonition 警告
+nag 唠叨
+trivial adj. 不重要的，琐碎的；琐细的
