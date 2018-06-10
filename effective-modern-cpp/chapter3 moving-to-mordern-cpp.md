@@ -32,11 +32,11 @@
             }
          //Widget middle_widget{{}};   //输出为0
          Widget middle_widget{};     //没有输出
-         也就是说，在gnu的编译器实现上，其实他对{{}}样的初始值，是给了一个默认的0值的**
+         也就是说，在gnu的编译器实现上，其实他对{{}}样的初始值，是给了一个默认的0值的
          注意一下，免的以后被坑
 
 #### Item 8 prefer nullptr to NULL and 0
--    **骚操作一枚:  这样可以返回不确定的值，骚呢，scott**
+-    **骚操作一枚:  这样可以返回不确定的值，厉害呢，scott**
 
          auto lockAndCall(FuncType func,
          MuxType& mutex,
@@ -66,6 +66,26 @@
                 f(nullptr);   //output: void *
                 return 0;
                 }
-   
+#### Item 9  prefer alias declaration to typedef 
+-    书中举的例子代码很长，这里就不贴了，主要的意思是\
+     **使用using 在模板中会有很大的作用可以避免，过多的影响理解的代码的出现，同时可以在template内使用独立的type 而不用加上typename**
+-    C++14 offers alias templates for all the C++11 type traits transformations , 
+     更加sleek的类型是如：std::remove_const_t
 
+#### Item 10 Prefer scoped enums to unscoped enums 
+-   C++98-style enums are now known as unscoped enums.
+-   Enumerators of scoped enums are visible only within the enum. They convert
+to other types only with a cast.\
+   **以上两条就是说，之前的enums是没有域的，enums的命名会污染外部的命名空间**\
+   **而新的enum class 则不会**
+-   Both scoped and unscoped enums support specification of the underlying type.
+The default underlying type for scoped enums is int. Unscoped enums have no
+default underlying type.\
+    **enum class 的另个好处是他可以避免隐式的类型转换,因为enum的**
+    **默认类型是int,可以当做int来使用**
+-   Scoped enums may always be forward-declared. Unscoped enums may be
+forward-declared only if their declaration specifies an underlying type.
+    **enum class 可以声明而不被定义，so-called forward-declaration**\
+    *书上还举了一个方便不一样文件夹下的tuple引用的例子，但是比较繁琐, 代码写起来也不很漂亮就不是很注意*
+    
 ***
