@@ -88,4 +88,25 @@ forward-declared only if their declaration specifies an underlying type.
     **enum class 可以声明而不被定义，so-called forward-declaration**\
     *书上还举了一个方便不一样文件夹下的tuple引用的例子，但是比较繁琐, 代码写起来也不很漂亮就不是很注意*
     
+#### Item 11 Prefer deleted functions to private undefined ones.
+-   书上的一个例子是使用delete来拒绝隐式转换，但是这样其实可以使用explicit来完成，并不能作为一个充分的理由\
+    **其实可以通过将特定的constructor声明为delete来拒绝一些特定的实例化**
+-   还有另外的一个理由：使用delete来使模板拒绝一些特定参数的 实例化，这个到时挺好用的
+
+#### Item 12 Declare overriding functions override
+-   在子类显示的声明override的话，如果父类中没有相应的函数，compiler会报错
+    这样方便排错，在编译器发现错误
+-   在这个Item下，作者讲了另外的一个知识点，是类内成员函数的引用修饰符
+    这个意思，如果在对应的工厂设计模式下面，如果生成工厂生成了一个类以后，类暂时是右值，\
+    如果，只是利用了这个临时类的一些数据，然后这个类就被销毁了，这样如果使用正常的非引用修饰符的话\
+    是一种浪费性能的方式，而使用右值引用修饰符修饰函数以后，这个函数的返回的就会变成\
+    该临时类的右值返回，这个时候就不用进行另外一次的copy-constructor
+
+#### Item 13 Prefer const_iterators to iterators
+-   c\++98中的const是不很好用的，在c\++11中进行了很大的优化, 
+-   新标准中容器操作都是用的const_iterators, 
+-   c++14引入了对于std::cbegin(container &C)和对应的cend的支持
+-   日常代码中尽量用const_iterator 就想scott的effective c++ 中的提到的 use const as far as possible.
+    
+
 ***
