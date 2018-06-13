@@ -21,6 +21,7 @@ public:
 			cout<<temp<<endl;
 		}
 	}
+	Widget()=delete;
 	Widget(Widget& temp){
 		std::cout<<"I'm in ";
 		temp_value=temp.temp_value; 
@@ -34,35 +35,17 @@ private:
 	int temp_value2;
 };
 
-Widget 
+
+class MakeWidget{
+public:
+	Widget && re_right()&&{
+		return std::move(Widget{2});
+	}
+};
 
 int main(void)
 {
-	//copy constructor
-	Widget small_widget(12, 23.234);
-	cout<<endl;
-	//Widget middle_widget{12, 23.234};
-	//Widget middle_widget{{}};
-	Widget middle_widget{};
-	std::initializer_list<string> str_list{};
-	std::initializer_list<string> int_list{};
-	cout<<endl;
-	cout<<"inside string";
-	cout<<endl;
-	for(const auto& temp:str_list){
-		cout<<temp;
-	}
-	cout<<"inside int";
-	cout<<endl;
-	for(const auto& temp:int_list){
-		cout<<temp;
-	}
-	//Widget middle_widget=small_widget;
-	//narrow conversion
-	//double x=10, y=12.3;
-	//int z(x+y);
-	//cout<<z<<endl;
 
-
+	auto widget=MakeWidget().re_right;
 	return 0;
 }

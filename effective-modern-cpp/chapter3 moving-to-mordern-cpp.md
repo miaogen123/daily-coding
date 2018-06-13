@@ -108,5 +108,32 @@ forward-declared only if their declaration specifies an underlying type.
 -   c++14引入了对于std::cbegin(container &C)和对应的cend的支持
 -   日常代码中尽量用const_iterator 就想scott的effective c++ 中的提到的 use const as far as possible.
     
+#### Item 14  Declare functions noexcept if they won’t emit exceptions.
+-   使用noexcept 可以在程序发生异常的时候，保证所有的对象都被销毁
+-   noexcept只应该在少数确定是non-except的函数中使用，否则
+-   在98标准库的实现中，多数push_back都有强的异常安全保证，然后可以保证如果出现异常，原来的对象不会出现问题\
+    在c++11中出现了move语义，如果直接使用move替代原来的copy，如果出现错误，将无法返回最初的状态。所以对于这种情况\
+    只有在move不会抛出异常的手，这样也就是说，只有当相应的最底层的实现是nonexcept的时候，container才会使用move版本的
+    push_back.(STL一般情况下, 是有两种分别使用copy和move的push_back)
+
+            template <class T, size_t N>
+            void swap(T (&a)[N], // see
+            T (&b)[N]) noexcept(noexcept(swap(*a, *b))); // below
+            template <class T1, class T2>
+            struct pair {
+            …
+            void swap(pair& p) noexcept(noexcept(swap(first, p.first)) &&
+            noexcept(swap(second, p.second)));
+            …
+            };
+            //这实现看起来有点蛋疼啊
+-   c++11中所有的内存分配函数默认都是noexcept，无论是否进行声明。因为内存分配时候出现exception会很难受\
+    除了这些类中含有的data member 含有一些对象可能会抛except的时候
+-   functions with **wide contracts** 意思是他没有先决条件，对于传入的参数没有限制，这样的函数不会显示未定义行为
+-   有的library designer 会区分 wide contracts and narrow contract，对于wide *作者可能会使用noexcept版本的实现
+-   noexcept是一种函数接口，caller may depend on it.
+-   noexcept对于swap，move，memory deallocation function and destructors 用处很大
+-   **这一节，有点难啊, 不是很理解**
+    
 
 ***
