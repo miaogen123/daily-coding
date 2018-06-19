@@ -2,8 +2,7 @@
 import requests
 import  sys
 
-URL_GET = "http://opac.lib.whu.edu.cn/F/HXPJNR5S4FGAYKQKQ1C8Q1KVGBMC2BHVDNBLM7BRF29RQC47XQ-22495?func=item-global&doc_library=WHU09&doc_number=000765738&year=&volume=&sub_library="
-URL_GET = "http://opac.lib.whu.edu.cn/F/KQ227DN4BSLGG2JIC3B1X6YPAGXUES1IHGDMFQGD86Y4SNKGTS-13400?func=item-global&doc_library=WHU09&doc_number=000765738"
+URL_GET ="http://opac.lib.whu.edu.cn/F/QB6BKXTSR34B5ET1TFTPETECLT8P77M8XE8IMCFL5P2KKSU1QU-02844?func=item-global&doc_library=WHU09&doc_number=000765738"
 
 def use_params_requests():
     #构建请求参数

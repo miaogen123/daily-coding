@@ -135,5 +135,13 @@ forward-declared only if their declaration specifies an underlying type.
 -   noexcept对于swap，move，memory deallocation function and destructors 用处很大
 -   **这一节，有点难啊, 不是很理解**
     
-
+#### Item 15  Use constexpr whenever possible
+-   constexpr 的值必须是在编译期可知的，这会让constexpr表达式能够在使用常量的位置使用
+-   c\++11对于constexpr的限制比较多，但在c++14中大多都取消了。比如c\++11要求使用constexpr function
+    必须是一个statement的return 语句，c\++14则取消了这样要求(**虽然我测试用的gcc编译器还是不支持, vs2017可以的**)
+-   constexpr函数对于常量输入，可以产生编译时常量，对于runtime variable 参数就会产生，runtime variable
+-   书上说**c++11中constexpr 成员函数implicitly是const的，在c\++14中取消了这样的限制**(但我测试的gcc加--std=c++14 仍然不可用, vs2017可以的)
+-   **声明constexpr 函数或者变量，会减少一些运行时的开销，但是会增加编译时间**
+-   **constexpr is part of function interface.** 也就是客户端调用你的代码的依赖，如果你的constexpr发生了改动，
+    客户机的很多代码都会无法使用
 ***
