@@ -144,4 +144,24 @@ forward-declared only if their declaration specifies an underlying type.
 -   **声明constexpr 函数或者变量，会减少一些运行时的开销，但是会增加编译时间**
 -   **constexpr is part of function interface.** 也就是客户端调用你的代码的依赖，如果你的constexpr发生了改动，
     客户机的很多代码都会无法使用
+#### Item 16: Make const member functions thread safe 
+-   mutable 在const函数中，使用改变局部的constness. 含有mutable变量这样的const 成员函数就需要考虑线程安全性。
+-   内含锁的mutex的class对于move-only的处理，mutex 是不可以copy的
+-   **std::atomic 成本要比使用mutex要小一点，所以需要熟练使用atmoic**, 但是话又说回来， 
+    如果是多个atmoic变量的话，在多个atomic之间会形成空隙，造成非原子性，这样就需要使用mutex了，没有办法的
+#### Item 17: Understand special member function generation.
+-   对于可以move的对象 move and move-assigning 使用move，如果不可以的话，就是使用copy来完成
+-   与c++中copy constructor和copy-assignment 不同(当自定义其中的一个时，另外的一个没有定义的会有编译器来生成)， move与他的partner move-assignment 
+    则不是这样，当自定义其中一个的时候，另外一个则不会有编译器代劳，**原因在于，你自定义了其中任意一个，你都应该去定义其中一个**
+-   声明 copy operation(constructor or assignment) 会默认停止 move operation (constructor or assignment)的生成，原因是**当你自定义一个copy operation 时候,**
+    **就已经认定对于这个class 默认的 copy不适合这个类的使用，那么copy也可能不合适，反过来也是这样，如果定义了copy operation相应的copy operation也不会默认的生成**
+-   *the rule of three*: 是关于copy constructor and copy assignment and destructor
+    **当你自定义其中的任何一个的时候，都意味着有自己的内存/对象管理，那么另外的两个也是需要的**
+-   用户自定义的destructor 会抑制编译器生成move operation
+-   当你需要默认的move 而destructor又是必须要求的时候，可以用"=default"来使用默认的,
+    这里的一个问题是，当你无意中添加了一个 destructor的时候，原来的move语义可能不在生效，如果该类之前大量使用了move语义，这样简单的修改很可能造成性能的巨大损失
+-   move operation和copy operation 默认是互斥的，如果定义了前者，编译器不会默认生成后者，但是前者是被 overload的，其中有move和copy两个版本，可以完成后者的任务
+    这可能是为什么生成前者以后就不会默认生成后者的原因之一
+-   一个特殊情况是当你的constructor和destructor是模板函数的时候，compilers会为你生成默认的copy and move operation.
+-   这里有一个链接![Rule-of-Three becomes Rule-of-Five with C++11?](https://stackoverflow.com/questions/4782757/rule-of-three-becomes-rule-of-five-with-c11) 高赞答案Philipp的
 ***
