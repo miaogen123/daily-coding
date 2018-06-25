@@ -33,5 +33,22 @@ unique_ptr<T>) and one for arrays (std::unique_ptr<T[]>). 使用的话就跟单对象和多
 -   当然weak_ptr可以用来解决循环引用的问题，这个自然是不能被忘掉的
 -   有一点需要注意的是在shared_ptr的CB中，含有一个与weak_ptr有关的计数，see next item.
 
+#### Item 21 Item 21: Prefer std\::make_unique and std::make_shared to direct use of new
+-   软件工程的一大原则，不要使用冗余重复的代码
+-   使用make_*的一个原因是，避免将new object操作和construct a shared_ptr操作分开，不然出现异常就会导致内存泄漏，在effective CPP中也有这样的说法,
+    **个人还是更加倾向于分开写，我的意思是，不要把过于复杂的代码都写在一行里面，影响理解难于维护**
+-   以下两行代码的对比：
+     
+        std::shared_ptr<Widget> spw(new Widget);
+        //上面的进行了两次内存分配，一次给widget，一次给control block
+        auto spw = std::make_shared<Widget>();
+        //上面的只有一次，或者说，一次干了上面两次的事，把CB和object分配在一起了，效率更高
+    **emmmm，测试数据其实并没有支持"效率会提升"的这种说法, 具体看item21.cpp的执行结果，效率前者要比后者高1.5倍的样子**
+-   但是make_*不能像new一样自定义需要的deleter.
+-   另外一个限制在于make_*不能使用braces initializer，虽然braces initializer 也并不能完美转发
+-   **对于shared_ptr来说，如果一个对象使用自定义的new和delete，这个时候使用make_shared会使得CB和object分配在一起，然后当对象被destroy的时候，如果还有weak_ptr指向该对象，由于CB和object一起分配，不能单独释放内存,会造成对象和CB占用的内存一直都在，对象如果比较大，会造成内存的不够用,而直接new则不会有这种情况**
+-   书上给了一个为了达到exception-safe和tiny higher performance的trick：use lvalue to get exception-safe and use move if possible for performance.
+    
+
 ***
 
