@@ -26,6 +26,14 @@ public:
 	}
 private:
 	string big;
+	struct home{
+		string new_st;
+		string new_de;
+		vector<std::string> heom;
+		vector<std::string> hm;
+		vector<std::string> ho;
+		vector<std::string> hh;
+	};
 };
 
 int main(void)
@@ -49,5 +57,8 @@ int main(void)
 	cout<<temp2.out_string()<<endl;
 	cout<<temp3.out_string()<<endl;
 
+	//测试类内定义一个类，而不调用，会不会增加类本身的大小,
+	//buhui
+	cout<< sizeof(temp2)<<endl;
 	return 0;
 }

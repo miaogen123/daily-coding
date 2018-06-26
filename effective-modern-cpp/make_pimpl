@@ -1,0 +1,12 @@
+CXX=g++
+TO_test_pimpl=test_pimpl.o pimpl.o
+test_pimpl.exe: $(TO_test_pimpl)
+	$(CXX) $(TO_test_pimpl) -o test_pimpl.exe
+#$(CXX)  test_pimpl.o pimpl.o -o test_pimpl.exe
+test_pimpl.o: test_pimpl.cpp
+	$(CXX) -c test_pimpl.cpp
+pimpl.o:pimpl.cpp
+	$(CXX) -c pimpl.cpp
+
+clean:
+	rm *.o

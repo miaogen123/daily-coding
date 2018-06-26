@@ -33,7 +33,7 @@ unique_ptr<T>) and one for arrays (std::unique_ptr<T[]>). 使用的话就跟单对象和多
 -   当然weak_ptr可以用来解决循环引用的问题，这个自然是不能被忘掉的
 -   有一点需要注意的是在shared_ptr的CB中，含有一个与weak_ptr有关的计数，see next item.
 
-#### Item 21 Item 21: Prefer std\::make_unique and std::make_shared to direct use of new
+#### Item 21: Prefer std\::make_unique and std::make_shared to direct use of new
 -   软件工程的一大原则，不要使用冗余重复的代码
 -   使用make_*的一个原因是，避免将new object操作和construct a shared_ptr操作分开，不然出现异常就会导致内存泄漏，在effective CPP中也有这样的说法,
     **个人还是更加倾向于分开写，我的意思是，不要把过于复杂的代码都写在一行里面，影响理解难于维护**
@@ -49,6 +49,11 @@ unique_ptr<T>) and one for arrays (std::unique_ptr<T[]>). 使用的话就跟单对象和多
 -   **对于shared_ptr来说，如果一个对象使用自定义的new和delete，这个时候使用make_shared会使得CB和object分配在一起，然后当对象被destroy的时候，如果还有weak_ptr指向该对象，由于CB和object一起分配，不能单独释放内存,会造成对象和CB占用的内存一直都在，对象如果比较大，会造成内存的不够用,而直接new则不会有这种情况**
 -   书上给了一个为了达到exception-safe和tiny higher performance的trick：use lvalue to get exception-safe and use move if possible for performance.
     
+####  Item 22: When using the Pimpl Idiom, define special member functions in the implementation file.
 
+-   unique_ptr经常用来实现Pimpl
+-   Pimpl可以降低编译依赖,减少编译时间
+-   std\::unique_ptr不支持incomplete type，而std::shared_ptr则是支持的
+-   对于unique_ptr来说，将声明和实现分开来写，即使是使用=default,来实现
 ***
 
