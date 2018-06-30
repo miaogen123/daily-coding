@@ -39,6 +39,11 @@ private:
 	string big;
 };
 
+Temp_Test hello(string &&tp)
+{
+	Temp_Test tmp(tp);
+	return tmp;
+}
 
 int main(void)
 {
@@ -61,5 +66,10 @@ int main(void)
 	auto duration_make = chrono::duration_cast<chrono::microseconds>(end_make - start_make);
 	cout<<"time without make="<<double(duration.count()) * microseconds::period::num / microseconds::period::den<<endl;
 	cout<<"time with make="<<double(duration_make.count()) * microseconds::period::num / microseconds::period::den<<endl;
+
+
+	//test RVO
+	Temp_Test test_rvo(std::move(hello("hello")));
+
 	return 0;
 }
