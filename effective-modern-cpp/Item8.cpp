@@ -22,5 +22,6 @@ int main(void)
 	f((void *)0);   //output bool
 	cout<<"call f(nullptr)"<<endl;
 	f(nullptr);   //output: void *
+	kkkk;
 	return 0;
 }
