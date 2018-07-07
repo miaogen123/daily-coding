@@ -1,4 +1,5 @@
 #include<iostream>
+#include<windows.h>
 #include<algorithm>
 #include<vector>
 
@@ -16,6 +17,9 @@ void help()
 
 int main(void)
 {
+	cout<<"hello "<<endl;
+	Sleep(1);
+	cout<<"hello "<<endl;
 	help();
 
 	return 0;

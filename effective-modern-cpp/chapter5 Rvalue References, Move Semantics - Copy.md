@@ -37,7 +37,7 @@
 ####  Item 26: Avoid overloading on universal references.
 -   universal reference是一个非常**贪婪**(greediest)的推断，在重载时，他几乎会匹配所有的参数类型
 -   重载UR引用的函数或者ctor时，可能会过度的匹配导致不想要的结果出现
-####  Item 27: Avoid overloading on universal references.
+####  Item 27: Familiarize yourself with alternatives to overloading on universal references.
 -   当你需要一个UR同时又非常需要overload的时候，你可以使用一些small trick.
 -   abandon overloading
 -   pass by const T&
