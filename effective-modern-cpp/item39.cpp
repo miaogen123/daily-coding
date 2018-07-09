@@ -8,7 +8,6 @@ using namespace std;
 using namespace std::literals;
 //
 //测试一下利用future来同步
-//以及多个线程之间使用shared_future
 
 
 std::promise<void> commu_channel;

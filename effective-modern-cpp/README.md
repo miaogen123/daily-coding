@@ -16,7 +16,7 @@
         This is free software; see the source for copying conditions.  There is NO
         warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
         
-为了能够不每次都敲 --std=c++ 14，我投奔了g++ v8.0, 从**chapter4**开始
+为了能够不每次都敲 --std=c++ 14，我投奔了g++ v8.1, 从**chapter4**开始
 
         g++.exe (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 8.1.0
         Copyright (C) 2018 Free Software Foundation, Inc.
