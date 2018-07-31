@@ -4,7 +4,7 @@
 ####  Item 23: Understand std\::move and std::forward 
 
 -   所有的参数的都是左值(有地址的都是左值)
--   move和forward在运行时都不做任何的事情，他是一个模板,在运行期完成自己要做的事
+-   move和forward在运行时都不做任何的事情，他是一个模板,在编译期完成自己要做的事
 -   如果使用的move的话，对象不能是const，否则会调用他的copy constructor
 -   move保证的是，一定会产出一个右值
 -   forward是一个conditional cast，只有当传进来的参数是右值的时候，才会进行转换,
@@ -41,7 +41,7 @@
 -   当你需要一个UR同时又非常需要overload的时候，你可以使用一些small trick.
 -   abandon overloading
 -   pass by const T&
--   pass by value(and use std::move)
+-   pass by value(and use std::move)(意思就是不要使用UR)
 -   use tag dispatch
         
         template <typename T>
@@ -82,7 +82,7 @@
 -   以下的几种情况下会出现forwarding failure:当类型推断出错，或者无法推断的情况下
     -   Braced initializers:原因在于在forward给第二个函数的时候，compiler并不会进行隐式转化
     -   0 or NULL as null pointers
-    -   Declaration-only integral static const data members:仅声明 static const对象，会在引用时产生指针，这是这里失败的原因，也可能编译器或者linker会自己进行处：理
+    -   Declaration-only integral static const data members:仅声明 static const对象，会在引用时产生指针，这是这里失败的原因，也可能编译器或者linker会自己进行处理
     -   Overloaded function names and template names:当重载函数名和模板名做参数的时候，会失败，然后当时用的时候，可以选择对函数使用声明指针，对模板使用stati_cast
     -   Bitfields:引用bits是不可行的，可以选择使用一个传送copy，来使用forward
     

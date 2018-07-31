@@ -1,11 +1,16 @@
 ### 读Chapter2的随笔
 #### Item 5  prefer auto to explicit type declaration
+-   **事实上，auto在使用的时候也是要注意的，以免产生了自己不想要的类型，白白的浪费时间debug**
+    -   **比如auto i=10;这里的i就是一个unsigned int,如果i 和有符号的值进行比较，就可能会出现错误,(我遇到了不只一次)**
+    -   **对于auto str("hello");得到的是一个const char \*，虽然我想要的是string**
+    -   **并且首次出现在代码中的,并不常见的，如果之后，要写在参数的位置的，最好是写上类型**
 -   使用auto避免使用未initialize值
--   **C++14**可以使用auto 来承接lamda表达式的返回值，（不过lamda作用是啥不是很清楚）
+-   **C++14**可以使用auto 来承接lamda表达式的返回值
 -   auto与std::function相比:后者占用更多的内存,调用需要跟多的时间，可以说auto吊打std:;function
 -   **Item34** 作者极力劝读者使用lamda而非std::bind
 -   如下的代码:在32位下正常，unsigned在32和64位系统下32位，在v.size() 的返回
-    值平台而异, **这是为什么选择使用*auto***
+    值平台而异, **这是为什么选择使用auto**
+
 -   当你确定使用explicit declaration的时候，程序代码会更加易读，更加方便维护，don't be hesitate to suer
 
         std::vector<int> v;
@@ -19,7 +24,7 @@
         {
         … // do something with p
         } 
-    作者的意思是这里的p，其实是一个std::pair<const std::string, int>与预期的不一样
+    作者的意思是这里的p，其实是一个std\::pair<const std::string, int>与预期的不一样
     但我试了一下，**跟作者的结论不一样**，如下：
         
         std::unordered_map<std::string, int > m;
@@ -32,7 +37,6 @@
         const string ss("nihao");
         cout<<"the type of const string "<< typeid(ss).name()<<endl;
         
-15j
 
 #### Item 6  prefer auto to explicit type declaration
 -   对于bool的特殊处理

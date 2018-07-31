@@ -12,7 +12,7 @@
     -   需要自己优化线程的使用
     -   需要实现一些基于thread的技术，如thread pool
 
-####  Item 36:Specify std::launch::async if asynchronicity is essential.
+####  Item 36:Specify std\::launch::async if asynchronicity is essential.
 
 -   默认的std::async()可能是同步运行也可能是异步运行，取决于具体情况
 -   显式的有两种启动方式，std\::launch\::async和std\::launch\::defererd，前者立即执行，后者等到get或者wait被调用的时候,
@@ -27,7 +27,12 @@
 
 ####  Item 38: Be aware of varying thread handle destructor behavior.
 
--   **有点难**,容我找到中文版拜读一下
+-   对于promise生成的数据在另外的future对象中进行读取的时候，因为这些数据既不合适在caller中存，又不适合在callee中存，Standard Library就规定存在一个叫share state的中间位置，具体实现由库作者决定
+-   对于future对象，当以下几个条件满足的时候，会在destruct的时候block.直到task finished
+    -    引用了一个share state created by a call to std::async
+    -    launch policy is std\::launch::async
+    -    当前future是最后一个引用share state的future(对于std::future恒成立，对shared_future，则不然)
+-   对于使用std::packaged_task来说，则不会出现上述的special behavior
 
 ####  Item 39: Consider void futures for one-shot event communication.
 

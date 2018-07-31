@@ -7,14 +7,14 @@
     或者是带状态的lamda,unique_prt的大小就会发生改变
 -   std::unique_ptr有带[]和不带[]两种形式one for individual objects (std::
 unique_ptr<T>) and one for arrays (std::unique_ptr<T[]>). 使用的话就跟单对象和多对象数组的区别一样
--   Pimpl Idiom:指向实现的指针(这种trick用在类的实现中很方便，可以隐藏被指向类的变化，达到封装的效果)
-    带状态的lamda比较适合这种,在**Item22**有具体解释，先占个坑，回头再答
+-   Pimpl Idiom:指向实现的指针(这种trick用在类的实现中很方便，可以隐藏被指向类的变化，达到降低耦合的效果)
+    带状态的lamda比较适合这种,在**Item22**有具体解释
 -   还有就是unique_ptr可以直接转换为shared_ptr，简直不能在方便了有木有
 
 #### Item 19 Use std::shared_ptr for shared-ownership resource management
 -   shared_ptr 的大小是raw pointer的2倍，他还额外包括了一个指向control block的对象，之中包括引用计数,weak_number, 以及自定义的deleter和alloctor if have.
 -   shared_ptr一般情况下只能指向动态分配的内存，但是make_shared可以避免这样的存储开销
--   因为shared_ptr在进行reference count的修改的时候，需要是原子操作，**也就意味着，如果系统是时间要求很高的，就不能使用该指针或者说需要注意该指针带来的性能消耗**
+-   因为shared_ptr在进行reference count的修改的时候，需要是原子操作，**也就意味着，如果系统是时间要求很高的，就不能使用该指针或者说需要注意该指针带来的性能消耗**(**仅仅是读的话，性能损耗应该是小的，但是如果,在多线程环境下涉及多次的写的时候,就需要小心**)
 -   如果使用move进行shared_ptr的ownership tranferring，这个过程不涉及引用计数的修改(原子操作),性能损耗会小很多
 -   **不像unique_ptr，自定义的deleter不用放在模板参数里面，这样给了shared_ptr相当大的灵活性，所有的shared_ptr都是可以互换共享的**
 -   AS for control block(CB),make_shared保证会产生一个CB，当从unique_ptr构造shared_ptr时也会创造一个CB, shared_ptr从一个raw pointer构造时会产生CB,
@@ -22,7 +22,7 @@ unique_ptr<T>) and one for arrays (std::unique_ptr<T[]>). 使用的话就跟单对象和多
 -   **尽可能的不要把一个raw pointer 传给一个shared_ptr, multi-control-block 会出现，你的头会变大**
 -   Curiously Recurring Template Pattern (CRTP) 用法：CRTP的出现是为了兼顾多态性以及效率，短的继承对于效率来讲，
     不是大的影响，关键是长的多重继承会影响效率，CRTP的出现兼顾二者，具体看这篇文章![C++ 惯用法 CRTP 简介 ](https://liam0205.me/2016/11/26/Introduction-to-CRTP-in-Cpp/)
--   std::enable_shared_from_this:给予一个有shared_ptr管理的对象，以用this 生成一个shared_ptr对象的能力.也就是提供了将this这个raw pointer 转变成shared_ptr的能力。最主要的是防止多个shared_ptr对象的生成. 
+-   std::enable_shared_from_this:给予一个有shared_ptr管理的对象，以用this 生成一个shared_ptr对象的能力.也就是提供了将this这个raw pointer 转变成shared_ptr的能力。最主要的是防止多个shared_ptr对象的生成. 在原来内部使用this指针的地方，现在使用shared_from_this()
 -   shared_ptr里面甚至存在virtual function用来释放对象，好在只有在对象释放的时候才调用
 -   shared_ptr和unique_ptr不同的地方是：**unique_ptr提供指向原始数组的能力，而shared_ptr不提供，如果你需要的话可以选择使用std\::array,std\::vector**
 
@@ -53,7 +53,8 @@ unique_ptr<T>) and one for arrays (std::unique_ptr<T[]>). 使用的话就跟单对象和多
 
 -   unique_ptr经常用来实现Pimpl
 -   Pimpl可以降低编译依赖,减少编译时间
--   std\::unique_ptr不支持incomplete type，而std::shared_ptr则是支持的
+-   std\::unique_ptr不支持incomplete type，而std::shared_ptr则是支持的(不完整类型：声明但是未定义),
+    **对于unique_ptr这个地方有点疑惑，不声明destructor，会使用编辑器默认的实现，然后会遇到static_assert,因为类型不完整而无法通过，但通过将destructor变成=defualt,就可以解决，那么使用编译器生成的和=defualt 有什么区别的**
 -   对于unique_ptr来说，将声明和实现分开来写，即使是使用=default,来实现
 ***
 

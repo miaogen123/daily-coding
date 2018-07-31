@@ -1,8 +1,7 @@
 ### 读Chapter1的随笔
 #### Item 1  template  type deduce
--   reference  is discarded during .
--   it's normal when Paramtype is pointer or reference 
--   Universal reference means rvalue reference .
+-   reference  is discarded during deduce.
+-   Universal reference means rvalue reference with type deduce.
     -   **lvalue is deduced as lvalue reference .**
     -   rvalue  is still a rvalue reference .
 -   ParamType is neither pointer nor reference , namely by value.
@@ -63,11 +62,11 @@
 #### Item 3 understand decltype  
 
 -   c++中的container一般返回的是引用，但也存在返回value 的情况
--   **universal reference ==右值引用**，主要使用用来处理，接受的参数可能既是\
+-   **universal reference !=右值引用**，主要使用用来处理，接受的参数可能既是\
     左值，又可能是右值，同时也想保持这两种情况(同时处理),而不用写重载
 -   decltype 对于**表达式**以及decltype((x))类型的，总是产生左值引用
 -   **(c++14)** decltype(auto) 在推导返回值的时候，是为了进行处理返回引用的情况
--   decltype 不修改表达式的类型，不想auto会omit reference
+-   decltype 不修改表达式的类型，不像auto会omit reference
 
 //注释：mayer老先生很幽默啊：
 **That’s the kind of code that puts you on the express train
@@ -90,4 +89,4 @@ to undefined behavior—a train you certainly don’t want to be on.**
 derision  嘲笑
 admonition 警告
 nag 唠叨
-trivial adj. 不重要的，琐碎的；琐细的
+**trivial** adj. 不重要的，琐碎的；琐细的
