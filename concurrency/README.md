@@ -7,3 +7,5 @@
         Copyright (C) 2018 Free Software Foundation, Inc.
         This is free software; see the source for copying conditions.  There is NO
         warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+-   PS:manning每天放了5分钟的阅读时间，美滋滋啊，5分钟截下来的图，够我看一天的了,
+    **美好生活，从学习开始**
