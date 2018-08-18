@@ -22,3 +22,29 @@
         //adopt_lock是因为这两个锁都是已经拿到的锁，只要用adopt_lock获取所有权就可以了
 -    std::lock 支持all-or-nothing 语义，全部锁上，或者一个都没有
 -    c++17 支持scope_lock模板,一个人干了lock的RAII_lock两件事
+-    其他的有一些死锁的例子()
+    -    线程间循环等待结束，你join我，我join你
+    -    多个锁使用，在拿到一锁以后，拿另外一把
+    -    避免拿到锁以后，使用user-define 的代码，因为那部分代码是未知的
+    -    如果非要获取多个锁，并且无法使用std::lock，那就保证锁的顺序是一致的
+-   等级lock：多个锁获得时的防死锁的办法，相当于规定了锁的加锁顺序，**实现可以???选择是一个包含一个**
+    -    利用thread_local变量,在每一个线程中存储一个自己的副本，每次加锁验证副本，副本大于类内const属性的值，才可以加锁。
+-   线程局部变量：(同线程共存亡)
+    -   命名空间内全局变量
+    -   类内static变量(记得定义)
+    -   局部变量
+-   unique_lock的两种模式：一个是adopt_lock和defer_lock，分别是接管锁和延迟加锁,这使得unique_locck更加灵活，同时也cost a little more
+    -   考虑到lock_guard也没有lock()与unlock()，try_lock，unique_lock的灵活性高了很多
+-   拿锁的时间尽量减少
+-   对于比较对象,如果需要比较，最好是在拿到两个对象的锁以后在比较，否则比较的就不是同一时刻的值
+    -   有些对象访问可以不加锁，但初始化(费时间)需要加锁，如果使用mutex, 时间消耗比较大，这时可以考虑使用call_once&once_flag，对于可能在多处出现的只需要初始化一次的函数,每个地方都调用
+
+               std::call_once(std::once_flag, function_obj, arguments)  //如果函数需要使用类内的成员的话，就需要把this传进去
+               //这两个操作都是move-only
+-   c\++11要求对于static变量只初始化一次，那个线程先到，谁初始化，不存在多次的初始化
+-   对于读写者问题，c\++14提供了std::shared_timed_mutex, c++17还提供了std::shared_mutex,少了一些功能但性能好一点, 是否这二者真的有用与处理器核数以及读写的相关负载有关
+    -   读者可以使用
+        std::shared_lock\<std\::shared_mutex>  //  来共享读
+    -   写者可以使用
+        std::lock_guard\<std\::shared_mutex>  //  来独占写
+-   std\::recursive_lock用来解决，在不释放的情况下的多次重锁，**这是一种坏的设计模式**
