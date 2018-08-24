@@ -47,4 +47,5 @@
         std::shared_lock\<std\::shared_mutex>  //  来共享读
     -   写者可以使用
         std::lock_guard\<std\::shared_mutex>  //  来独占写
--   std\::recursive_lock用来解决，在不释放的情况下的多次重锁，**这是一种坏的设计模式**
+-   std\::recursive_lock用来解决，在不释放的情况下的多次重锁，**这是一种坏的设计模式**,这种情况一般是，class内每个成员都有锁，但成员内又有相互调用，因为这样卡了对类内常量成员调用的
+-   
