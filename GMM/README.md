@@ -10,11 +10,11 @@
 
 **程序流程如下图所示：**
 
-![](https://github.com/miaogen123/daily-coding/GMM/raw/master/procedure.jpg)
+![](https://github.com/miaogen123/daily-coding/raw/master/GMM/procedure.png)
 
 **程序结果：**
 
-![result](https://github.com/miaogen123/daily-coding/GMM/raw/master/result_co.jpg)
+![result](https://github.com/miaogen123/daily-coding/raw/master/GMM/result_co.jpg)
 
 ***
 
